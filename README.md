@@ -1,5 +1,5 @@
-Here i am to share the free cricket live score api, And also share the code which i have built in the PHP which return the record in the JSON 
-format.
+Here i am to sharing the free cricket live score code which i have built in the PHP which return the result in the JSON 
+format. You can simply execute the code on your server and hit the URL and get the outcome.
 
 The following are the list whose code I am sharing.
 1. Get All Players
