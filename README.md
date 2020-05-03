@@ -9,3 +9,4 @@ The following are the list whose code I am sharing.
 5. Match Schedule.
 
 You can easily implement these API'S in you website/app.
+Relying on a 3rd party (https://www.cricket.com.au) as a service API to pull data.
