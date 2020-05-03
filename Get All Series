@@ -1,0 +1,60 @@
+All Series Code, return the result in the json format and created JSON File too of all series, I am also sharing the json file. 
+
+<?php
+
+$curl = curl_init();
+curl_setopt_array($curl, array(
+  CURLOPT_URL => "https://api.cricket.com.au/series",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_MAXREDIRS => 10,
+  CURLOPT_TIMEOUT => 30,
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "GET",
+  CURLOPT_HTTPHEADER => array(
+    "cache-control: no-cache",
+    "postman-token: 40f8ee9f-8be6-fe1d-ec98-f57449ecaca8"
+  ),
+));
+$response = curl_exec($curl);
+$dec  = json_decode($response,'TRUE');
+foreach($dec['seriesList']['series'] as $allSeri){
+
+    $seri_id = $allSeri['id'];
+    $name = $allSeri['name'];
+    $statisticsProvider = $allSeri['statisticsProvider'];
+    $shieldImageUrl = $allSeri['shieldImageUrl'];
+    $status = $allSeri['status'];
+    $startDateTime = date("Y-m-d",strtotime($allSeri['startDateTime']));
+    $month = date('F', strtotime($startDateTime));
+    $endDateTime = date("Y-m-d",strtotime($allSeri['endDateTime']));
+    $seriesUrl = $allSeri['seriesUrl'];
+$allS[] = array('series_id'=>$seri_id,'name'=>$name,'shieldImageUrl'=>$shieldImageUrl,'startDateTime'=>$startDateTime,'month'=>$month,'endDateTime'=>$endDateTime);
+}
+
+
+
+
+
+foreach($dec['tourList']['tours'] as $alltours  ){
+$banner = $alltours['banner'];
+$series = $alltours['series'];
+$name = $alltours['name'];
+     $startDateTime = date("Y-m-d",strtotime($alltours['startDate']));
+    $month = date('F', strtotime($startDateTime));
+    $endDateTime = date("Y-m-d",strtotime($alltours['endDate'])); 
+    $endMonth = date('F', strtotime($endDateTime));
+    $logo = $alltours['logo'];
+    foreach($series as $seriesID){
+        $seriesD = $seriesID['seriesId'];
+        $matchType = $seriesID['matchType'];
+        
+    $final[] = array("series_id"=>$seriesD,"name"=>$name,"shieldImageUrl"=>$logo,"matchType"=>$matchType,'startDateTime'=>$startDateTime,'month'=>$month,"end_month"=>$endMonth,'endDateTime'=>$endDateTime);
+    }
+}
+
+$mrg = array_merge($allS,$final);
+
+$fps = fopen("all_series.json", 'w+')  or die('Cannot create file');
+fwrite($fps, json_encode($final));
+fclose($fps);
