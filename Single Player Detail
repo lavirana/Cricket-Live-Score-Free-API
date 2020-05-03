@@ -1,0 +1,156 @@
+pass the player id
+
+<?php
+$playerID = $_GET['player_id'];
+
+$curl = curl_init();
+curl_setopt_array($curl, array(
+  CURLOPT_URL => "https://api.cricket.com.au/players/$playerID/stats",
+  CURLOPT_RETURNTRANSFER => true,
+  CURLOPT_ENCODING => "",
+  CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+  CURLOPT_CUSTOMREQUEST => "GET",
+  CURLOPT_HTTPHEADER => array(
+    "cache-control: no-cache",
+    "postman-token: 8ba907b4-cf0c-69f3-b0dc-66dfcbb7d05d"
+  ),
+));
+$response = curl_exec($curl);
+$decod_res = json_decode($response,'TRUE');
+
+foreach($decod_res as $play_res){
+   $player_id = $play_res['playerId'];
+    $firstname = $play_res['firstName'];
+    $lastname = $play_res['lastName'];
+    $shortName = $play_res['shortName'];
+    $playerType = $play_res['playerType'];
+    $didYouKnow = trim($play_res['didYouKnow']);
+    $height = $play_res['height'];
+    $imageUrl = $play_res['imageUrl'];
+    $dateOfBirth = $play_res['dateOfBirth'];
+    $testDebutDate = $play_res['testDebutDate'];
+    $odiDebutDate = $play_res['odiDebutDate'];
+    $t20DebutDate = $play_res['t20DebutDate'];
+    $teamPlayedFor = $play_res['teamPlayedFor'];
+    $teamPlayedAgainst = $play_res['teamPlayedAgainst'];
+    $battingStyle = $play_res['battingStyle'];
+    $bowlingStyle = $play_res['bowlingStyle'];
+    $bio = $play_res['bio'];
+    $carrerstat = $play_res['careerStats']; 
+
+
+ $player_basic_dt[] = array('player_id'=>$player_id,'firstname'=>$firstname,'lastname'=>$lastname,'shortname'=>$shortName,'playertype'=>$playerType,'didyouknow'=>$didYouKnow,'height'=>$height,'imageURL'=>$imageUrl,'dateofbirth'=>$dateOfBirth,'testdebutdate'=>$testDebutDate,'odidebutdate'=>$odiDebutDate,'t20debutedate'=>$t20DebutDate,'teamplayerfor'=>$teamPlayedFor,'teamplayeragainst'=>$teamPlayedAgainst,'battingStyle'=>$battingStyle,'bowlingstyle'=>$bowlingStyle,'bio'=>$bio); 
+}
+
+
+//get player stats//
+foreach($decod_res as $play_res){
+    foreach($play_res as $playerSTs){   
+    foreach($playerSTs as $playerST){
+       
+ 
+        $twenty20_matchID =  $playerST['matchTypeId'];
+        $twenty20_matchTypeName = $playerST['matchTypeName'];
+        $twenty20_numberOfMatches = $playerST['numberOfMatches'];
+        $twenty20_debutDate = $playerST['debutDate'];
+        $twenty20_battingStats = $playerST['battingStats']['innings'];
+        $twenty20_ballsFaced = $playerST['battingStats']['ballsFaced'];
+        $twenty20_notOuts = $playerST['battingStats']['notOuts'];
+        $twenty20_runs = $playerST['battingStats']['runs'];
+        $twenty20_centuries = $playerST['battingStats']['centuries'];
+        $twenty20_fifties = $playerST['battingStats']['fifties'];
+        $twenty20_average = $playerST['battingStats']['average'];
+        $twenty20_scoringRate = $playerST['battingStats']['scoringRate'];
+        $twenty20_ducks = $playerST['battingStats']['ducks'];
+        $twenty20_highestScoreisNotOut = $playerST['battingStats']['highestScore']['isNotOut'];
+        $twenty20_highestScoreRuns = $playerST['battingStats']['highestScore']['runs'];
+        $twenty20_caught = $playerST['battingStats']['howOuts']['caught'];
+        $twenty20_stumped = $playerST['battingStats']['howOuts']['stumped'];
+        $twenty20_bowled = $playerST['battingStats']['howOuts']['bowled'];
+        $twenty20_lbw = $playerST['battingStats']['howOuts']['lbw'];
+        $twenty20_hitWicket = $playerST['battingStats']['howOuts']['hitWicket'];   
+        $twenty20_handledBall = $playerST['battingStats']['howOuts']['handledBall'];
+        $twenty20_obstructingField = $playerST['battingStats']['howOuts']['obstructingField'];
+        $twenty20_absent = $playerST['battingStats']['howOuts']['absent'];
+        $twenty20_caughtAndBowled = $playerST['battingStats']['howOuts']['caughtAndBowled'];
+        $twenty20_retired = $playerST['battingStats']['howOuts']['retired'];
+        $twenty20_retiredHurt = $playerST['battingStats']['howOuts']['retiredHurt'];
+        $twenty20_hitBallTwice = $playerST['battingStats']['howOuts']['hitBallTwice'];
+        $twenty20_timeOut = $playerST['battingStats']['timeOut'];
+        $twenty20_fours = $playerST['battingStats']['fours'];
+        $twenty20_sixes = $playerST['battingStats']['sixes'];
+        $twenty20_bowlingInnings = $playerST['bowlingStats']['innings'];
+        $twenty20_bowlingStats_overs = $playerST['bowlingStats']['overs'];
+        $twenty20_bowlingStats_balls = $playerST['bowlingStats']['balls'];
+        $twenty20_bowlingStats_maidens = $playerST['bowlingStats']['maidens'];
+        $twenty20_bowlingStats_runs = $playerST['bowlingStats']['runs'];
+        $twenty20_bowlingStats_wickets = $playerST['bowlingStats']['wickets'];
+        $twenty20_bowlingStats_fiveWickets = $playerST['bowlingStats']['fiveWickets'];
+        $twenty20_bowlingStats_tenWickets = $playerST['bowlingStats']['tenWickets'];
+        $twenty20_bowlingStats_bestInning = $playerST['bowlingStats']['bestInning'];
+        $twenty20_bowlingStats_bestMatch = $playerST['bowlingStats']['bestMatch'];
+        $twenty20_bowlingStats_average = $playerST['bowlingStats']['average'];
+        $twenty20_bowlingStats_strikeRate = $playerST['bowlingStats']['strikeRate'];
+        $twenty20_bowlingStats_economyRate = $playerST['bowlingStats']['economyRate'];
+        $twenty20_bowlingStats_wides = $playerST['bowlingStats']['extras']['wides'];
+        $twenty20_bowlingStats_noBalls = $playerST['bowlingStats']['extras']['noBalls'];
+        $twenty20_bowlingStats_bowled = $playerST['bowlingStats']['wicketsStats']['bowled'];
+        $twenty20_bowlingStats_caught = $playerST['bowlingStats']['wicketsStats']['caught'];
+        $twenty20_bowlingStats_caughtAndBowled = $playerST['bowlingStats']['wicketsStats']['caughtAndBowled'];
+        $twenty20_bowlingStats_lbw = $playerST['bowlingStats']['wicketsStats']['lbw'];
+        $twenty20_bowlingStats_stumped = $playerST['bowlingStats']['wicketsStats']['stumped'];
+        $twenty20_bowlingStats_hitWicket = $playerST['bowlingStats']['wicketsStats']['hitWicket'];
+        $twenty20_fieldingStats_innings = $playerST['fieldingStats']['innings'];
+        $twenty20_fieldingStats_runOuts = $playerST['fieldingStats']['runOuts'];
+        $twenty20_fieldingStats_catches = $playerST['fieldingStats']['catches'];
+        $twenty20_fieldingStats_stumpings = $playerST['fieldingStats']['stumpings'];
+
+        
+        if($twenty20_matchTypeName == 'Twenty20'){
+        $Twenty20_player_stats = array('twenty20_matchID'=>$twenty20_matchID,'twenty20_matchTypeName'=>$twenty20_matchTypeName, 'twenty20_numberOfMatches'=>$twenty20_numberOfMatches,'twenty20_debutDate'=>$twenty20_debutDate,'twenty20_battingStats'=>$twenty20_battingStats,'twenty20_ballsFaced'=>$twenty20_ballsFaced,'twenty20_notOuts'=>$twenty20_notOuts,'twenty20_notOuts'=>
+        $twenty20_notOuts,'twenty20_runs'=>$twenty20_runs,'twenty20_centuries'=>$twenty20_centuries,'twenty20_fifties'=>
+        $twenty20_fifties,'twenty20_average'=>$twenty20_average,'twenty20_scoringRate'=>$twenty20_scoringRate,'twenty20_ducks'=> $twenty20_ducks,'twenty20_highestScoreisNotOut'=>$twenty20_highestScoreisNotOut,'twenty20_highestScoreRuns'=>$twenty20_highestScoreRuns,'twenty20_caught'=>$twenty20_caught,'twenty20_stumped'=>$twenty20_stumped,'twenty20_bowled'=>$twenty20_bowled,'twenty20_lbw'=>$twenty20_lbw,'twenty20_hitWicket'=>$twenty20_hitWicket,'twenty20_handledBall'=>$twenty20_handledBall,'twenty20_obstructingField'=>$twenty20_obstructingField,'twenty20_absent'=>$twenty20_absent,'twenty20_caughtAndBowled'=>$twenty20_caughtAndBowled,'twenty20_retired'=>$twenty20_retired,'twenty20_retiredHurt'=>$twenty20_retiredHurt,'twenty20_hitBallTwice'=>$twenty20_hitBallTwice,'twenty20_timeOut'=>$twenty20_timeOut,'twenty20_fours'=>$twenty20_fours,'twenty20_sixes'=>$twenty20_sixes,'twenty20_fours'=>$twenty20_fours,'twenty20_bowlingInnings'=>$twenty20_bowlingInnings,'twenty20_bowlingStats_overs'=>$twenty20_bowlingStats_overs,'twenty20_bowlingStats_balls'=>$twenty20_bowlingStats_balls,'twenty20_bowlingStats_maidens'=>$twenty20_bowlingStats_maidens,'twenty20_bowlingStats_runs'=>$twenty20_bowlingStats_runs,'twenty20_bowlingStats_wickets'=>$twenty20_bowlingStats_wickets,'twenty20_bowlingStats_fiveWickets'=>$twenty20_bowlingStats_fiveWickets,'twenty20_bowlingStats_tenWickets'=>$twenty20_bowlingStats_tenWickets,'twenty20_bowlingStats_bestInning'=>$twenty20_bowlingStats_bestInning,'twenty20_bowlingStats_bestMatch'=>$twenty20_bowlingStats_bestMatch,'twenty20_bowlingStats_average'=>$twenty20_bowlingStats_average,'twenty20_bowlingStats_strikeRate'=>$twenty20_bowlingStats_strikeRate,'twenty20_bowlingStats_economyRate'=>$twenty20_bowlingStats_economyRate,'twenty20_bowlingStats_wides'=>$twenty20_bowlingStats_wides,'twenty20_bowlingStats_noBalls'=>$twenty20_bowlingStats_noBalls,'twenty20_bowlingStats_bowled'=>$twenty20_bowlingStats_bowled,'twenty20_bowlingStats_caught'=>$twenty20_bowlingStats_caught,'twenty20_bowlingStats_caughtAndBowled'=>$twenty20_bowlingStats_caughtAndBowled,'twenty20_bowlingStats_lbw'=>$twenty20_bowlingStats_lbw,'twenty20_bowlingStats_stumped'=>$twenty20_bowlingStats_stumped,'twenty20_bowlingStats_hitWicket'=>$twenty20_bowlingStats_hitWicket,'twenty20_fieldingStats_innings'=>$twenty20_fieldingStats_innings,'twenty20_fieldingStats_runOuts'=>$twenty20_fieldingStats_runOuts,'twenty20_fieldingStats_catches'=>$twenty20_fieldingStats_catches,'twenty20_fieldingStats_stumpings'=>$twenty20_fieldingStats_stumpings
+  );
+        }
+        
+        
+        if($twenty20_matchTypeName == 'ODI'){
+        $ODI_player_stats = array('odi_matchID'=>$twenty20_matchID,'odi_matchTypeName'=>$twenty20_matchTypeName, 'odi_numberOfMatches'=>$twenty20_numberOfMatches,'odi_debutDate'=>$twenty20_debutDate,'odi_battingStats'=>$twenty20_battingStats,'odi_ballsFaced'=>$twenty20_ballsFaced,'odi_notOuts'=>$twenty20_notOuts,'odi_notOuts'=>
+        $twenty20_notOuts,'odi_runs'=>$twenty20_runs,'odi_centuries'=>$twenty20_centuries,'odi_fifties'=>
+        $twenty20_fifties,'odi_average'=>$twenty20_average,'odi_scoringRate'=>$twenty20_scoringRate,'odi_ducks'=> $twenty20_ducks,'odi_highestScoreisNotOut'=>$twenty20_highestScoreisNotOut,'odi_highestScoreRuns'=>$twenty20_highestScoreRuns,'odi_caught'=>$twenty20_caught,'odi_stumped'=>$twenty20_stumped,'odi_bowled'=>$twenty20_bowled,'odi_lbw'=>$twenty20_lbw,'odi_hitWicket'=>$twenty20_hitWicket,'odi_handledBall'=>$twenty20_handledBall,'odi_obstructingField'=>$twenty20_obstructingField,'odi_absent'=>$twenty20_absent,'odi_caughtAndBowled'=>$twenty20_caughtAndBowled,'odi_retired'=>$twenty20_retired,'odi_retiredHurt'=>$twenty20_retiredHurt,'odi_hitBallTwice'=>$twenty20_hitBallTwice,'odi_timeOut'=>$twenty20_timeOut,'odi_fours'=>$twenty20_fours,'odi_sixes'=>$twenty20_sixes,'odi_bowlingInnings'=>$twenty20_bowlingInnings,'odi_bowlingStats_overs'=>$twenty20_bowlingStats_overs,'odi_bowlingStats_balls'=>$twenty20_bowlingStats_balls,'odi_bowlingStats_maidens'=>$twenty20_bowlingStats_maidens,'odi_bowlingStats_runs'=>$twenty20_bowlingStats_runs,'odi_bowlingStats_wickets'=>$twenty20_bowlingStats_wickets,'odi_bowlingStats_fiveWickets'=>$twenty20_bowlingStats_fiveWickets,'odi_bowlingStats_tenWickets'=>$twenty20_bowlingStats_tenWickets,'odi_bowlingStats_bestInning'=>$twenty20_bowlingStats_bestInning,'odi_bowlingStats_bestMatch'=>$twenty20_bowlingStats_bestMatch,'odi_bowlingStats_average'=>$twenty20_bowlingStats_average,'odi_bowlingStats_strikeRate'=>$twenty20_bowlingStats_strikeRate,'odi_bowlingStats_economyRate'=>$twenty20_bowlingStats_economyRate,'odi_bowlingStats_wides'=>$twenty20_bowlingStats_wides,'odi_bowlingStats_noBalls'=>$twenty20_bowlingStats_noBalls,'odi_bowlingStats_bowled'=>$twenty20_bowlingStats_bowled,'odi_bowlingStats_caught'=>$twenty20_bowlingStats_caught,'odi_bowlingStats_caughtAndBowled'=>$twenty20_bowlingStats_caughtAndBowled,'odi_bowlingStats_lbw'=>$twenty20_bowlingStats_lbw,'odi_bowlingStats_stumped'=>$twenty20_bowlingStats_stumped,'odi_bowlingStats_hitWicket'=>$twenty20_bowlingStats_hitWicket,'odi_fieldingStats_innings'=>$twenty20_fieldingStats_innings,'odi_fieldingStats_runOuts'=>$twenty20_fieldingStats_runOuts,'odi_fieldingStats_catches'=>$twenty20_fieldingStats_catches,'odi_fieldingStats_stumpings'=>$twenty20_fieldingStats_stumpings
+  );         
+ }
+        
+        if($twenty20_matchTypeName == 'Test'){
+        $TEST_player_stats = array('test_matchID'=>$twenty20_matchID,'test_matchTypeName'=>$twenty20_matchTypeName, 'test_numberOfMatches'=>$twenty20_numberOfMatches,'test_debutDate'=>$twenty20_debutDate,'test_battingStats'=>$twenty20_battingStats,'test_ballsFaced'=>$twenty20_ballsFaced,'test_notOuts'=>$twenty20_notOuts,'test_notOuts'=>
+        $twenty20_notOuts,'test_runs'=>$twenty20_runs,'test_centuries'=>$twenty20_centuries,'test_fifties'=>
+        $twenty20_fifties,'test_average'=>$twenty20_average,'test_scoringRate'=>$twenty20_scoringRate,'test_ducks'=> $twenty20_ducks,'test_highestScoreisNotOut'=>$twenty20_highestScoreisNotOut,'test_highestScoreRuns'=>$twenty20_highestScoreRuns,'test_caught'=>$twenty20_caught,'test_stumped'=>$twenty20_stumped,'test_bowled'=>$twenty20_bowled,'test_lbw'=>$twenty20_lbw,'test_hitWicket'=>$twenty20_hitWicket,'test_handledBall'=>$twenty20_handledBall,'test_obstructingField'=>$twenty20_obstructingField,'test_absent'=>$twenty20_absent,'test_caughtAndBowled'=>$twenty20_caughtAndBowled,'test_retired'=>$twenty20_retired,'test_retiredHurt'=>$twenty20_retiredHurt,'test_hitBallTwice'=>$twenty20_hitBallTwice,'test_timeOut'=>$twenty20_timeOut,'test_fours'=>$twenty20_fours,'test_sixes'=>$twenty20_sixes,'test_bowlingInnings'=>$twenty20_bowlingInnings,'test_bowlingStats_overs'=>$twenty20_bowlingStats_overs,'test_bowlingStats_balls'=>$twenty20_bowlingStats_balls,'test_bowlingStats_maidens'=>$twenty20_bowlingStats_maidens,'test_bowlingStats_runs'=>$twenty20_bowlingStats_runs,'test_bowlingStats_wickets'=>$twenty20_bowlingStats_wickets,'test_bowlingStats_fiveWickets'=>$twenty20_bowlingStats_fiveWickets,'test_bowlingStats_tenWickets'=>$twenty20_bowlingStats_tenWickets,'test_bowlingStats_bestInning'=>$twenty20_bowlingStats_bestInning,'test_bowlingStats_bestMatch'=>$twenty20_bowlingStats_bestMatch,'test_bowlingStats_average'=>$twenty20_bowlingStats_average,'test_bowlingStats_strikeRate'=>$twenty20_bowlingStats_strikeRate,'test_bowlingStats_economyRate'=>$twenty20_bowlingStats_economyRate,'test_bowlingStats_wides'=>$twenty20_bowlingStats_wides,'test_bowlingStats_noBalls'=>$twenty20_bowlingStats_noBalls,'test_bowlingStats_bowled'=>$twenty20_bowlingStats_bowled,'test_bowlingStats_caught'=>$twenty20_bowlingStats_caught,'test_bowlingStats_caughtAndBowled'=>$twenty20_bowlingStats_caughtAndBowled,'test_bowlingStats_lbw'=>$twenty20_bowlingStats_lbw,'test_bowlingStats_stumped'=>$twenty20_bowlingStats_stumped,'test_bowlingStats_hitWicket'=>$twenty20_bowlingStats_hitWicket,'test_fieldingStats_innings'=>$twenty20_fieldingStats_innings,'test_fieldingStats_runOuts'=>$twenty20_fieldingStats_runOuts,'test_fieldingStats_catches'=>$twenty20_fieldingStats_catches,'test_fieldingStats_stumpings'=>$twenty20_fieldingStats_stumpings);         
+ }
+        
+    }   
+    }   
+}
+
+
+$arrayMergered = $player_basic_dt[0];
+if(!empty($ODI_player_stats)){
+    $arrayMergered = array_merge($arrayMergered,$ODI_player_stats);
+}
+if(!empty($TEST_player_stats)){
+    $arrayMergered = array_merge($arrayMergered,$TEST_player_stats);
+}
+if(!empty($Twenty20_player_stats)){
+    $arrayMergered = array_merge($arrayMergered,$Twenty20_player_stats);
+}
+$final_res = $arrayMergered;
+
+
+
+$fps = fopen("all-players/player_profile_$playerID.json", 'w+')  or die('Cannot create file');
+fwrite($fps, json_encode($final_res));
+fclose($fps);
+
+$file = "all-players/player_profile_$playerID.json";
+if(file_exists($file)){
+chmod("$file", 0777); 
+}
