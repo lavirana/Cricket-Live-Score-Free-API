@@ -1,0 +1,75 @@
+Get All Players PHP Code
+In the curl you need to update the series id, whose player you want to display. I will share the API of all the series too.
+
+
+<?php
+$curl = curl_init();
+curl_setopt_array( $curl, array(
+    CURLOPT_URL => "https://api.cricket.com.au/series/2181/teams",
+    CURLOPT_RETURNTRANSFER => true,
+    CURLOPT_ENCODING => "",
+    CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+    CURLOPT_CUSTOMREQUEST => "GET",
+    CURLOPT_HTTPHEADER => array(
+        "cache-control: no-cache",
+        "postman-token: 66127e71-b4f9-b70c-8afe-ca0c1e47d564"
+    ),
+) );
+$response = curl_exec( $curl );
+
+$err = curl_error( $curl );
+$json_deco = json_decode( $response, TRUE );
+foreach ( $json_deco[ 'seriesTeams' ] as $get_ids ) {
+
+    foreach ( $get_ids as $final_res ) {
+        $team_detail[] = array( 'team_id' => $final_res[ 'id' ],
+            'name' => $final_res[ 'name' ],
+            'shortName' => $final_res[ 'shortName' ],
+            'logoUrl' => $final_res[ 'logoUrl' ]
+        );
+    }
+}
+
+foreach ( $team_detail as $tea ) {
+
+    $team_id = $tea[ 'team_id' ];
+    $team_name = $tea[ 'name' ];
+    $team_nm = trim( strstr( $team_name, 'Men', true ) );
+    $team_logo = $tea[ 'logoUrl' ];
+
+
+    $curl = curl_init();
+
+    curl_setopt_array( $curl, array(
+        CURLOPT_URL => "https://api.cricket.com.au/teams/$team_id/players/",
+        CURLOPT_RETURNTRANSFER => true,
+        CURLOPT_ENCODING => "",
+        CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+        CURLOPT_CUSTOMREQUEST => "GET",
+        CURLOPT_HTTPHEADER => array(
+            "cache-control: no-cache",
+            "postman-token: 7a6b1e00-f563-6dab-5859-17889905592f"
+        ),
+    ) );
+
+    $team_response = curl_exec( $curl );
+    $err = curl_error( $curl );
+    curl_close( $curl );
+
+    $dd = json_decode( $team_response, 'TRUE' );
+    foreach ( $dd[ 'teamPlayers' ][ 'players' ] as $finalPlayer_data ) {
+        if ( $finalPlayer_data[ 'playerType' ] === "Allrounder" ) {
+            $player_type = "All-Rounder";
+        } else {
+            $player_type = $finalPlayer_data[ 'playerType' ];
+        }
+
+        $finalRes[] = array( 'team_name' => $team_nm, 'player_id' => $finalPlayer_data[ 'playerId' ], 'fullname' => $finalPlayer_data[ 'fullName' ], 'imageURL' => $finalPlayer_data[ 'imageURL' ], 'battingStyle' => $finalPlayer_data[ 'battingStyle' ], 'bowlingStyle' => $finalPlayer_data[ 'bowlingStyle' ], 'playerType' => $player_type, 'dob' => $finalPlayer_data[ 'dob' ], 'testDebutDate' => $finalPlayer_data[ 'testDebutDate' ], 'odiDebutDate' => $finalPlayer_data[ 'odiDebutDate' ], 't20DebutDate' => $finalPlayer_data[ 't20DebutDate' ], 'bio' => $finalPlayer_data[ 'bio' ], 'didYouKnow' => $finalPlayer_data[ 'didYouKnow' ], 'height' => $finalPlayer_data[ 'height' ] );
+    }
+    //$team_deco[] = json_decode($finalRes,'TRUE');
+}
+
+
+$fps = fopen( 'cricketplayers.json', 'w+' )or die( 'Cannot create file' );
+fwrite( $fps, json_encode( $finalRes ) );
+fclose( $fps );
